@@ -1,0 +1,154 @@
+generator client {
+  provider = "prisma-client-js"
+  // output   = "../app/generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Admin {
+  id        String   @id @default(uuid())
+  username  String   @unique
+  password  String // هش شده (نه متن خام!)
+  email     String?  @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  resetTokens PasswordResetToken[] // ارتباط یک به چند
+}
+
+model Reservation {
+  id        String            @id @default(uuid())
+  fullName  String
+  email     String?
+  phone     String
+  visaType  String
+  status    ReservationStatus @default(PENDING)
+  createAt  DateTime          @default(now())
+  updatedAt DateTime          @updatedAt
+}
+
+enum ReservationStatus {
+  PENDING // در انتظار بررسی
+  APPROVED // تایید شده
+  REJECTED // رد شده
+}
+
+model User {
+  id              Int     @id @default(autoincrement())
+  name            String
+  fatherName      String
+  code            String     @unique // کد ملی یا شناسه
+  phone           String? // شماره موبایل
+  idCardImage     String? // تصویر شناسنامه (URL)
+  profileImage    String? // عکس کاربر (URL)
+  immigrationCase String? // کیس مهاجرتی یا شماره پرونده
+  slug            String     @unique @default("temp-slug")
+  status          UserStatus @default(PENDING) // وضعیت کاربر (فعال/غیرفعال)
+  createdAt       DateTime   @default(now())
+  updatedAt       DateTime   @updatedAt
+
+  @@map("users") // نام جدول در دیتابیس
+}
+
+enum UserStatus {
+  ACTIVE
+  INACTIVE
+  PENDING
+}
+
+// ----- مدل کشور -----
+model Country {
+  id          String     @id @default(uuid())
+  name        String
+  slug        String     @unique
+  countryCode String // مثل "nl" یا "de"
+  flagUrl     String?
+  coverImage  String?
+  // رابطه Many-to-Many با ویزا
+  visaTypes   VisaType[] @relation("CountryVisaTypes")
+  // محتواهای عمومی کشور (visaTypes مرتبط نیستند)
+  contents    Content[]
+
+  visaCovers CountryVisaCover[]
+}
+
+// ----- مدل ویزا -----
+model VisaType {
+  id           String    @id @default(uuid())
+  name         String
+  slug         String    @unique
+  // رابطه Many-to-Many با کشور
+  countries    Country[] @relation("CountryVisaTypes")
+  // رابطه Many-to-Many با محتوا
+  contents     Content[] @relation("ContentVisaTypes")
+  showInNavbar Boolean   @default(true)
+  showInFooter Boolean   @default(false)
+
+  countryCovers CountryVisaCover[]
+}
+
+// ----- مدل محتوا -----
+model Content {
+  id        String          @id @default(uuid())
+  title     String
+  body      String
+  section   ContentSection?
+  imageUrl  String?
+  order     Int?
+  // هر محتوا به یک کشور تعلق دارد
+  countryId String
+  country   Country         @relation(fields: [countryId], references: [id])
+  // رابطه Many-to-Many با ویزا (اختیاری)
+  visaTypes VisaType[]      @relation("ContentVisaTypes")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// ----- enum برای بخش‌های محتوا -----
+enum ContentSection {
+  Introduction
+  Benefits
+  Requirements
+  Fees
+  VisaType
+  Process
+  Contact
+  Renewal
+  Opportunities
+  Tips
+}
+
+// مدل جدید برای کاور اختصاصی هر کشور و ویزا
+model CountryVisaCover {
+  id         String   @id @default(uuid())
+  country    Country  @relation(fields: [countryId], references: [id])
+  countryId  String
+  visaType   VisaType @relation(fields: [visaTypeId], references: [id])
+  visaTypeId String
+
+  coverImage String?
+
+  @@unique([countryId, visaTypeId]) // جلوگیری از تکرار یک کشور-ویزای مشابه
+}
+
+model contactMessage {
+  id        String   @id @default(uuid())
+  name      String
+  phone     String
+  email     String
+  message   String
+  createdAt DateTime @default(now())
+}
+
+model PasswordResetToken {
+  id        String   @id @default(uuid())
+  token     String   @unique
+  adminId   String // کلید خارجی
+  admin     Admin    @relation(fields: [adminId], references: [id]) // رابطه
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+}
