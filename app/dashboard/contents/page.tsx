@@ -20,8 +20,8 @@ export default function ContentPage() {
   const [loading, setLoading] = useState(true);
 
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 8; // تعداد آیتم‌ها در هر صفحه
-  const maxPageButtons = 5; // حداکثر شماره صفحات برای نمایش
+  const itemsPerPage = 10; // تعداد آیتم‌ها در هر صفحه
+  const maxPageButtons = 10; // حداکثر شماره صفحات برای نمایش
 
   useEffect(() => {
     async function fetchContents() {
