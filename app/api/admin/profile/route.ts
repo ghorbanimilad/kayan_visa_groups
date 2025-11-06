@@ -1,25 +1,50 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import bcrypt from "bcrypt";
+import type { NextRequest } from "next/server";
+import jwt from "jsonwebtoken";
 
-// GET: گرفتن اطلاعات ادمین
-export async function GET(req: Request) {
+async function getCurrentUser(req: NextRequest) {
+  const token = req.cookies.get("adminToken")?.value;
+  if (!token) return null;
+
   try {
-    // فرض می‌کنیم تنها یک ادمین داریم یا کاربر وارد شده با session
-    const admin = await prisma.admin.findFirst({
-      select: { id: true, username: true, email: true },
-    });
+    const decoded = jwt.verify(token, process.env.JWT_SECRET!) as unknown;
+    if (typeof decoded === "object" && decoded !== null && "id" in decoded) {
+      const payload = decoded as { id: string; role?: string };
+      return { id: payload.id, role: payload.role || "EMPLOYEE" };
+    }
+    return null;
+  } catch {
+    return null;
+  }
+}
 
-    if (!admin) {
-      return NextResponse.json({ message: "ادمین یافت نشد" }, { status: 404 });
+export async function GET(req: NextRequest) {
+  try {
+    const user = await getCurrentUser(req);
+
+    if (!user) {
+      return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
 
-    return NextResponse.json(admin);
+    const dbUser = await prisma.admin.findUnique({
+      where: { id: user.id },
+      select: { id: true, username: true, email: true, role: true },
+    });
+
+    if (!dbUser) {
+      return NextResponse.json({ message: "User not found" }, { status: 404 });
+    }
+
+    return NextResponse.json(dbUser);
   } catch (err) {
     console.error(err);
     return NextResponse.json({ message: "خطا در دریافت پروفایل" }, { status: 500 });
   }
 }
+
+
+
 
 // PUT: بروزرسانی پروفایل
 export async function PUT(req: Request) {

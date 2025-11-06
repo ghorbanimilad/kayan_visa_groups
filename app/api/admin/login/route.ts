@@ -1,4 +1,3 @@
-// app/api/auth/login/route.ts
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import bcrypt from "bcrypt";
@@ -8,7 +7,7 @@ export async function POST(req: NextRequest) {
   try {
     const { username, password, remember } = await req.json();
 
-    // پیدا کردن ادمین
+    // پیدا کردن کاربر
     const admin = await prisma.admin.findUnique({ where: { username } });
     if (!admin)
       return NextResponse.json(
@@ -16,7 +15,6 @@ export async function POST(req: NextRequest) {
         { status: 401 }
       );
 
-    // بررسی رمز عبور
     const isValid = await bcrypt.compare(password, admin.password);
     if (!isValid)
       return NextResponse.json(
@@ -24,9 +22,9 @@ export async function POST(req: NextRequest) {
         { status: 401 }
       );
 
-    // ساخت JWT
+    // ساخت JWT با نقش
     const token = jwt.sign(
-      { id: admin.id, username: admin.username },
+      { id: admin.id, username: admin.username, role: admin.role },
       process.env.JWT_SECRET!,
       { expiresIn: remember ? "30d" : "1h" }
     );
@@ -35,18 +33,15 @@ export async function POST(req: NextRequest) {
     const response = NextResponse.json({ message: "موفق" });
     response.cookies.set("adminToken", token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production" ? true : false,
+      secure: process.env.NODE_ENV === "production" ? true : false, // 🔹 localhost = false
       sameSite: "strict",
       path: "/",
-      maxAge: remember ? 60 * 60 * 24 * 30 : 60 * 60, // 30 روز یا 1 ساعت
+      maxAge: remember ? 60 * 60 * 24 * 30 : 60 * 60,
     });
 
     return response;
   } catch (err) {
     console.error(err);
-    return NextResponse.json(
-      { error: "خطای داخلی سرور" },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: "خطای داخلی سرور" }, { status: 500 });
   }
 }

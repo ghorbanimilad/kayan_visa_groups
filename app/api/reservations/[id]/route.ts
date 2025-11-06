@@ -1,11 +1,11 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { verifyAdmin } from "@/lib/auth";
-import { NextApiRequest, NextApiResponse } from "next";
+import { checkAdmin } from "@/lib/auth";
+
 
 // 📌 گرفتن یک رزرو
 export async function GET(req: Request, { params }: { params: { id: string } }) {
-  const admin = verifyAdmin(req as any);
+  const admin = checkAdmin(req as any);
   if (!admin) return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
 
   const reservation = await prisma.reservation.findUnique({ where: { id: params.id } });
@@ -16,7 +16,7 @@ export async function GET(req: Request, { params }: { params: { id: string } }) 
 
 // 📌 بروزرسانی (فقط ادمین)
 export async function PUT(req: Request, { params }: { params: { id: string } }) {
-  const admin = verifyAdmin(req as any);
+  const admin = checkAdmin(req as any);
   if (!admin) return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
 
   const { status } = await req.json();

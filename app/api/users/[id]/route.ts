@@ -8,10 +8,20 @@ import path from "path";
 // اسکیمای اعتبارسنجی کاربر برای PUT
 const userSchema = z.object({
   name: z.string().min(2, "نام کاربر باید حداقل 2 کاراکتر باشد").max(50),
-  fatherName: z.string().min(2, "نام پدر باید حداقل 2 کاراکتر باشد").max(50).optional(),
-  phone: z.string().min(11, "شماره موبایل باید 11 رقم باشد").max(11).regex(/^09\d{9}$/, "شماره موبایل نامعتبر است").optional(),
+  fatherName: z
+    .string()
+    .min(2, "نام پدر باید حداقل 2 کاراکتر باشد")
+    .max(50)
+    .optional(),
+  phone: z
+    .string()
+    .min(11, "شماره موبایل باید 11 رقم باشد")
+    .max(11)
+    .regex(/^09\d{9}$/, "شماره موبایل نامعتبر است")
+    .optional(),
   code: z.string().min(3, "کد کلاینت باید حداقل 3 کاراکتر باشد").optional(),
   immigrationCase: z.string().optional(),
+  status: z.enum(["ACTIVE", "INACTIVE", "PENDING"]),
 });
 
 // ⚡ GET /api/users/[id]
@@ -45,10 +55,17 @@ export async function GET(
 }
 
 // ⚡ PUT /api/users/[id]
-export async function PUT(req: Request, { params }: { params: { id: string } }) {
+export async function PUT(
+  req: Request,
+  { params }: { params: { id: string } }
+) {
   try {
     const id = Number(params.id);
-    if (isNaN(id)) return NextResponse.json({ success: false, message: "ID نامعتبر است" }, { status: 400 });
+    if (isNaN(id))
+      return NextResponse.json(
+        { success: false, message: "ID نامعتبر است" },
+        { status: 400 }
+      );
 
     const formData = await req.formData();
 
@@ -58,6 +75,7 @@ export async function PUT(req: Request, { params }: { params: { id: string } }) 
       phone: formData.get("phone") as string,
       code: formData.get("code") as string,
       immigrationCase: formData.get("immigrationCase") as string,
+      status: formData.get("status") as string, // ⚡ اضافه شد
     };
 
     // اعتبارسنجی
@@ -68,7 +86,10 @@ export async function PUT(req: Request, { params }: { params: { id: string } }) 
         const messages = parsed.error.flatten().fieldErrors[key];
         if (messages && messages.length > 0) fieldErrors[key] = messages[0];
       }
-      return NextResponse.json({ success: false, error: fieldErrors }, { status: 400 });
+      return NextResponse.json(
+        { success: false, error: fieldErrors },
+        { status: 400 }
+      );
     }
 
     // فایل‌ها
@@ -80,17 +101,25 @@ export async function PUT(req: Request, { params }: { params: { id: string } }) 
 
     for (const key in files) {
       const file = files[key];
-      if (file && file.size > 0) { // ⚡ فقط اگر فایل جدید ارسال شده
+      if (file && file.size > 0) {
+        // ⚡ فقط اگر فایل جدید ارسال شده
         if (file.size > 2 * 1024 * 1024)
-          return NextResponse.json({ error: `حجم ${key} زیاد است` }, { status: 400 });
+          return NextResponse.json(
+            { error: `حجم ${key} زیاد است` },
+            { status: 400 }
+          );
         if (!["image/jpeg", "image/png"].includes(file.type))
-          return NextResponse.json({ error: `فرمت ${key} فقط JPG/PNG مجاز است` }, { status: 400 });
+          return NextResponse.json(
+            { error: `فرمت ${key} فقط JPG/PNG مجاز است` },
+            { status: 400 }
+          );
 
         const timestamp = Date.now();
         const ext = file.name.split(".").pop();
         const fileName = `${timestamp}-${file.name}`;
         const uploadDir = path.join(process.cwd(), "public", "uploads");
-        if (!fs.existsSync(uploadDir)) fs.mkdirSync(uploadDir, { recursive: true });
+        if (!fs.existsSync(uploadDir))
+          fs.mkdirSync(uploadDir, { recursive: true });
 
         const buffer = Buffer.from(await file.arrayBuffer());
         fs.writeFileSync(path.join(uploadDir, fileName), buffer);
@@ -111,12 +140,12 @@ export async function PUT(req: Request, { params }: { params: { id: string } }) 
 
     return NextResponse.json({ success: true, data: user });
   } catch (err: any) {
-    return NextResponse.json({ success: false, message: err.message }, { status: 500 });
+    return NextResponse.json(
+      { success: false, message: err.message },
+      { status: 500 }
+    );
   }
 }
-
-
-
 
 // export async function PUT(req: Request, { params }: { params: { id: string } }) {
 //   try {
@@ -189,15 +218,28 @@ export async function PUT(req: Request, { params }: { params: { id: string } }) 
 // }
 
 // ⚡ DELETE /api/users/[id]
-export async function DELETE(_req: Request, { params }: { params: { id: string } }) {
+export async function DELETE(
+  _req: Request,
+  { params }: { params: { id: string } }
+) {
   try {
     const id = Number(params.id);
-    if (isNaN(id)) return NextResponse.json({ success: false, message: "ID نامعتبر است" }, { status: 400 });
+    if (isNaN(id))
+      return NextResponse.json(
+        { success: false, message: "ID نامعتبر است" },
+        { status: 400 }
+      );
 
     await prisma.user.delete({ where: { id } });
 
-    return NextResponse.json({ success: true, message: "کاربر با موفقیت حذف شد" });
+    return NextResponse.json({
+      success: true,
+      message: "کاربر با موفقیت حذف شد",
+    });
   } catch (err: any) {
-    return NextResponse.json({ success: false, message: err.message }, { status: 500 });
+    return NextResponse.json(
+      { success: false, message: err.message },
+      { status: 500 }
+    );
   }
 }

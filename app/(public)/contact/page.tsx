@@ -10,7 +10,7 @@ import Head from 'next/head'
 
 export const metadata: Metadata = {
   title: "تماس با ما",
-  description: " تماس با موسسه مهاجرتی ماکان",
+  description: " تماس با موسسه مهاجرتی کایان",
 };
 
 export default function ContactPage() {
@@ -22,8 +22,8 @@ export default function ContactPage() {
   return (
     <>
       <Head>
-        <title>تماس با ما - موسسه مهاجرتی ماکان</title>
-        <meta name="description" content="تماس با موسسه مهاجرتی ماکان برای مشاوره و خدمات مهاجرتی" />
+        <title>تماس با ما - موسسه مهاجرتی کایان</title>
+        <meta name="description" content="تماس با موسسه مهاجرتی کایان برای مشاوره و خدمات مهاجرتی" />
         <meta name="keywords" content=",ویزای کانادا,موسسه مهاجرتی, تماس با ما, مشاوره مهاجرتی" />
       </Head>
 
@@ -80,7 +80,7 @@ export default function ContactPage() {
 
         <div className='my-20'>
           <h1 className='text-center text-xl font-bold tracking-tighter text-gray-800'>
-            دفاتر مهاجرتی ماکان
+            دفاتر مهاجرتی کایان
           </h1>
 
           {/* تب‌ها */}

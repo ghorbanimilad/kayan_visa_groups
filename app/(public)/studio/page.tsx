@@ -6,14 +6,14 @@ import { motion, useScroll, useTransform } from "framer-motion"
 import Image from 'next/image'
 import Link from 'next/link'
 
-const cardVariants = {
-  hidden: { opacity: 0, y: 30 },
-  visible: (i: number) => ({
-    opacity: 1,
-    y: 0,
-    transition: { delay: i * 0.2, duration: 0.6, ease: "easeOut" },
-  }),
-};
+// const cardVariants = {
+//   hidden: { opacity: 0, y: 30 },
+//   visible: (i: number) => ({
+//     opacity: 1,
+//     y: 0,
+//     transition: { delay: i * 0.2, duration: 0.6, ease: "easeOut" },
+//   }),
+// };
 
 export default function StudioPage() {
 
@@ -57,7 +57,6 @@ export default function StudioPage() {
   // پارالکس تصویر و متن
   const imageY = useTransform(scrollY, [0, 300], [0, isMobile ? 0 : -50]);
   const textY = useTransform(scrollY, [0, 300], [0, isMobile ? 0 : -20]);
-  const starY = useTransform(scrollY, [0, 500], [0, -10]);
   const itemY = useTransform(scrollY, [0, 500], [0, -15]);
   const textScale = useTransform(scrollY, [0, 300], [1, isMobile ? 1 : 1.03]);
   const textRotate = useTransform(scrollY, [0, 300], [0, isMobile ? 0 : 1.2]);
@@ -65,8 +64,8 @@ export default function StudioPage() {
   return (
     <>
       <Head>
-        <title> درباره ما - موسسه مهاجرتی ماکان</title>
-        <meta name="description" content="درباره با موسسه مهاجرتی ماکان برای مشاوره و خدمات مهاجرتی" />
+        <title> درباره ما - موسسه مهاجرتی کایان</title>
+        <meta name="description" content="درباره با موسسه مهاجرتی کایان برای مشاوره و خدمات مهاجرتی" />
         <meta name="keywords" content="ویزای کانادا,موسسه مهاجرتی, تماس با ما, مشاوره مهاجرتی" />
       </Head>
 
@@ -132,10 +131,10 @@ export default function StudioPage() {
               transition={{ delay: 0.8, duration: 0.6 }}
             >
               <Link
-                href="/reservation"
+                href="/immigration-evaluation"
                 className="inline-block bg-gradient-to-br from-red-800 to-red-600 hover:from-red-800 hover:to-red-700 mt-6 md:mt-10 transition-colors text-white px-6 md:px-8 py-2 md:py-3 rounded-full font-semibold shadow-lg"
               >
-                درخواست ارزیابی رایگان ایده
+                درخواست ارزیابی رایگان 
               </Link>
             </motion.div>
           </motion.div>

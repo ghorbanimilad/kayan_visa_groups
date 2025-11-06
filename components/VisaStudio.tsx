@@ -1,5 +1,5 @@
 "use client"
-import Image from 'next/image';
+
 import Link from 'next/link';
 import React from 'react'
 import { motion } from "framer-motion"
@@ -103,9 +103,6 @@ export default function VisaStudio() {
                               </div>
                         </motion.div>
                   </div>
-
-
-
             </motion.div>
       )
 }

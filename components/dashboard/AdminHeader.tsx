@@ -1,18 +1,20 @@
 import { Menu } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { BiLogOut } from 'react-icons/bi';
+
 interface AdminHeaderProps {
       toggleSidebar: () => void;
 }
+
 export default function AdminHeader({ toggleSidebar }: AdminHeaderProps) {
       const router = useRouter();
+      
 
       const handleLogout = async () => {
             await fetch('/api/admin/logout', {
                   method: 'POST',
-                  
+
             });
             router.push('/admin/login');
       }
@@ -28,9 +30,11 @@ export default function AdminHeader({ toggleSidebar }: AdminHeaderProps) {
                               <h1 className="text-lg mx-4 tracking-tight text-white font-bold">داشبورد مدیریت</h1>
                         </div>
 
-                        <button type='submit' 
-                        onClick={handleLogout}
-                        className="text-white flex items-center gap-2 hover:text-cyan-400 cursor-pointer">
+                       
+
+                        <button type='submit'
+                              onClick={handleLogout}
+                              className="text-white flex items-center gap-2 hover:text-cyan-400 cursor-pointer">
                               خروج
                               <BiLogOut />
                         </button>

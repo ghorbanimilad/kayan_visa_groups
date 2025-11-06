@@ -52,8 +52,8 @@ export default function ReservationContent() {
       return (
             <>
                   <Head>
-                        <title>  رزرو وقت مشاوره | موسسه مهاجرتی ماکان</title>
-                        <meta name="description" content="تماس با موسسه مهاجرتی ماکان برای مشاوره و خدمات مهاجرتی" />
+                        <title>  رزرو وقت مشاوره | موسسه مهاجرتی کایان</title>
+                        <meta name="description" content="تماس با موسسه مهاجرتی کایان برای مشاوره و خدمات مهاجرتی" />
                         <meta name="keywords" content=",ویزای کانادا,موسسه مهاجرتی, تماس با ما, مشاوره مهاجرتی" />
                   </Head>
 
@@ -113,7 +113,7 @@ export default function ReservationContent() {
                         viewport={{ once: true }}
                         transition={{ duration: 0.5, delay: 0.4 }}
                         className=' rounded-2xl flex items-center text-right flex-col pb-8 p-4 my-8 '>
-                        <Image src="/logo.png" alt="File" width={120} height={120} className="object-cover  mb-2 mt-4" />
+                        <Image src="/logo4.png" alt="File" width={140} height={140} className="  mb-2 mt-4" />
                         <h3 className='text-center text-xl tracking-tight text-gray-800 font-bold mb-6'>موسسه مهاجرتی ماکان</h3>
                         <form onSubmit={handleSubmit} className='md:max-w-3xl w-full text-center'>
                               <div className='grid grid-cols-1 lg:grid-cols-3 gap-3 '>

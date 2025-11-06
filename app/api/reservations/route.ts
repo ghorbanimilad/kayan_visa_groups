@@ -1,6 +1,5 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { verifyAdmin } from "@/lib/auth";
 import { z } from "zod";
 
 /**
@@ -32,10 +31,7 @@ const createReservationSchema = z.object({
 // 📌 گرفتن همه رزروها
 export async function GET(req: Request) {
   try {
-    //     const admin = verifyAdmin(req as any);
-    //     if (!admin) {
-    //       return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
-    //     }
+    
 
     const reservations = await prisma.reservation.findMany({
       orderBy: { createAt: "desc" },

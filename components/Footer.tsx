@@ -170,7 +170,7 @@ export default function Footer() {
                         className='py-14 md:py-8 mx-10'>
                         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 md:gap-20 text-center md:text-right">
                               <div className='flex items-center justify-center '>
-                                    <Image src="/logo.png" width={120} height={120} alt="logo" className='object-cover' />
+                                    <Image src="/logo4.png" width={140} height={140} alt="logo" className='object-cover' />
                               </div>
                               <div className='flex items-center justify-center md:justify-start'>
                                     <p className='text-gray-200'>

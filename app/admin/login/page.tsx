@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Eye, EyeOff } from "lucide-react";
+import Image from "next/image";
 
 export default function LoginPage() {
       const [username, setUsername] = useState("");
@@ -37,7 +38,7 @@ export default function LoginPage() {
 
             <div className="flex flex-col justify-center items-center h-screen">
                   <div>
-                        <img src="/logo.png" alt="" className="w-32 h-32 object-cover" />
+                        <Image src="/logo4.png" alt="موسسه مهاجرتی کایان" width={150} height={150} />
                   </div>
                   {error && <p className="text-red-500">{error}</p>}
                   <form onSubmit={handleLogin} className="bg-white p-6 rounded-lg shadow-lg w-96">

@@ -20,7 +20,10 @@ export default function UserPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [deletingId, setDeletingId] = useState<string | null>(null);
+
+
   
+const [editingStatusId, setEditingStatusId] = useState<string | null>(null);
 
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 8; // تعداد کاربران در هر صفحه
@@ -49,6 +52,8 @@ export default function UserPage() {
 
     fetchUsers();
   }, []);
+
+
 
   const handleDelete = async (id: string) => {
     if (!confirm("آیا از حذف این کاربر مطمئن هستید؟")) return;
@@ -154,22 +159,28 @@ export default function UserPage() {
                   <td className="p-2">{user.fatherName || "-"}</td>
                   <td className="p-2">{user.phone || "-"}</td>
                   <td className="p-2">{user.code || "-"}</td>
-                  <td className="p-2">{user.status}</td>
+<td className="p-2 text-center ">
+      {user.status}
+    </td>
+
+
+
+
+
                   <td className="p-2 space-x-2">
                     <Link
                       href={`users/${user.id}/edit`}
-                      className="bg-blue-500 hover:bg-blue-600 text-white px-2 py-1 rounded"
+                      className="bg-blue-100 text-blue-500 hover:bg-blue-200 px-2 py-1 rounded"
                     >
                       ویرایش
                     </Link>
                     <button
                       onClick={() => handleDelete(user.id)}
                       disabled={deletingId === user.id}
-                      className={`px-2 py-1 rounded ${
-                        deletingId === user.id
+                      className={`px-2 py-1 rounded ${deletingId === user.id
                           ? "bg-gray-400 text-white cursor-not-allowed"
-                          : "bg-red-500 hover:bg-red-600 text-white"
-                      }`}
+                          : "bg-red-100 hover:bg-red-200 text-red-500 cursor-pointer"
+                        }`}
                     >
                       {deletingId === user.id ? "در حال حذف..." : "حذف"}
                     </button>
@@ -196,11 +207,10 @@ export default function UserPage() {
                       <button
                         key={page}
                         onClick={() => handlePageClick(page)}
-                        className={`px-3 py-1 rounded border ${
-                          page === currentPage
+                        className={`px-3 py-1 rounded border ${page === currentPage
                             ? "bg-gray-800 text-white border-gray-800"
                             : "bg-white text-gray-800 border-gray-300 hover:bg-gray-100"
-                        }`}
+                          }`}
                       >
                         {page}
                       </button>

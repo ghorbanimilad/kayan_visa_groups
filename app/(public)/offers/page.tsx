@@ -80,16 +80,16 @@ export default function OffersPage() {
   const { scrollY } = useScroll();
 
   // تعریف transform ها روی MotionValue
-  const y1: MotionValue<number> = useTransform(scrollY, [0, 800], [0, -80]);
-  const y2: MotionValue<number> = useTransform(scrollY, [0, 800], [0, -50]);
-  const y3: MotionValue<number> = useTransform(scrollY, [0, 800], [0, -30]);
-  const y4: MotionValue<number> = useTransform(scrollY, [0, 800], [0, -20]);
+  // const y1: MotionValue<number> = useTransform(scrollY, [0, 800], [0, -80]);
+  // const y2: MotionValue<number> = useTransform(scrollY, [0, 800], [0, -50]);
+  // const y3: MotionValue<number> = useTransform(scrollY, [0, 800], [0, -30]);
+  // const y4: MotionValue<number> = useTransform(scrollY, [0, 800], [0, -20]);
 
   return (
     <>
       <Head>
-        <title> درباره ما - موسسه مهاجرتی ماکان</title>
-        <meta name="description" content="درباره با موسسه مهاجرتی ماکان برای مشاوره و خدمات مهاجرتی" />
+        <title> درباره ما - موسسه مهاجرتی کایان</title>
+        <meta name="description" content="در این صفحه با مراحل گام‌به‌گام مهاجرت آشنا شوید؛ از تعیین هدف و ارزیابی شرایط تا آماده‌سازی مدارک و ارسال درخواست. موسسه مهاجرتی کایان همراه مطمئن شما در مسیر مهاجرت است." />
         <meta name="keywords" content="ویزای کانادا,موسسه مهاجرتی, تماس با ما, مشاوره مهاجرتی" />
       </Head>
 
@@ -149,7 +149,7 @@ export default function OffersPage() {
             transition={{ delay: 0.8, duration: 0.6 }}
           >
             <Link
-              href="/reservation"
+              href="/immigration-evaluation"
               className="inline-block bg-gradient-to-br from-red-800 to-red-600 hover:from-red-800 hover:to-red-700 mt-10 transition-colors text-white px-8 py-3 rounded-full font-semibold shadow-lg"
             >
               ارزیابی شرایط من
@@ -216,7 +216,7 @@ export default function OffersPage() {
             {/* عکس اصلی */}
             <Image
               src="/images/ship.jpg"
-              alt="Migration Journey"
+              alt="تصویر نمادین سفر مهاجرتی"
               width={500}
               height={500}
               className="rounded-lg border-2 border-gray-200 shadow-xl z-20"
@@ -275,7 +275,7 @@ export default function OffersPage() {
 
                     <Image
                       src="/images/flesh.png"
-                      alt="Arrow Right"
+                      alt="مسیر مهاجرت موسسه کایان"
                       width={30}
                       height={30}
                       className="inline-block mr-2"

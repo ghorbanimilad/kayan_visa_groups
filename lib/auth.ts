@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-import { NextRequest } from "next/server";
+
 import { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { prisma } from "./prisma"; // اگر از Prisma استفاده می‌کنی

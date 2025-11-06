@@ -112,7 +112,7 @@ export default function Navbar({ visaTypes }: { visaTypes: VisaType[] }) {
                         </div>
 
                         <div className="flex items-center gap-3 text-white">
-                             <Link href="https://www.instagram.com/Kayan_immigrationco" target="_blank" rel="noopener noreferrer"><Instagram className="w-5 h-5 cursor-pointer hover:text-gray-300" /></Link>
+                              <Link href="https://www.instagram.com/Kayan_immigrationco" target="_blank" rel="noopener noreferrer"><Instagram className="w-5 h-5 cursor-pointer hover:text-gray-300" /></Link>
                               <Link href="https://t.me/Kayan_immigrationco" target="_blank" rel="noopener noreferrer"><PiTelegramLogoFill className="w-5 h-5 cursor-pointer hover:text-gray-300" /></Link>
                               <Link href="https://wa.me/16475944461" target="_blank" rel="noopener noreferrer"><BsWhatsapp className="w-5 h-5 cursor-pointer hover:text-gray-300" /></Link>
 
@@ -132,11 +132,10 @@ export default function Navbar({ visaTypes }: { visaTypes: VisaType[] }) {
 
 
                         {/****************  logo section *************/}
-                        <div>
-                              <Link href="/" className='flex items-center gap-6'>
-                                    <Image src="/logo.png" alt="موسسه مهاجرتی کایان" width={90} height={90} />
-                              </Link>
+                        <div className='flex items-center justify-center '>
+                              <Image src="/logo4.png" width={90} height={90} alt="موسسه مهاجرتی کایان" className='object-contain' />
                         </div>
+
 
 
                         {/************* Menu section *****************/}
@@ -306,8 +305,8 @@ export default function Navbar({ visaTypes }: { visaTypes: VisaType[] }) {
                                           تماس با ما
                                     </Link>
 
-                                    <div className="flex items-center absolute bottom-6 left-1/2 -translate-x-1/2 opacity-20  justify-center mb-6">
-                                          <Image src="/file.svg" alt="Logo" width={80} height={80} className="rounded-lg pointer-events-none select-none" />
+                                    <div className="flex items-center absolute bottom-6 left-1/2 -translate-x-1/2 opacity-60  justify-center mb-6">
+                                          <Image src="/logo4.png" alt="موسسه مهاجرتی کایان" width={150} height={150} className="" />
                                     </div>
 
                               </div>
@@ -334,7 +333,11 @@ export default function Navbar({ visaTypes }: { visaTypes: VisaType[] }) {
                                                 {sub.name}
                                           </Link>
                                     ))}
+                                    <div className="flex items-center absolute bottom-6 left-1/2 -translate-x-1/2 opacity-60  justify-center mb-6">
+                                          <Image src="/logo4.png" alt="موسسه مهاجرتی کایان" width={150} height={150} className="" />
+                                    </div>
                               </div>
+                              
                         ))}
 
                   </div>

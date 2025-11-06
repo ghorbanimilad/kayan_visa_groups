@@ -32,7 +32,7 @@ export default function OurExperince() {
                                                 <>
                                                       <CountUp
                                                             start={0}
-                                                            end={13}
+                                                            end={19}
                                                             duration={4}
                                                             formattingFn={toPersianNumber}
                                                       />
@@ -61,7 +61,7 @@ export default function OurExperince() {
                                                 <>
                                                       <CountUp
                                                             start={0}
-                                                            end={2000}
+                                                            end={4000}
                                                             duration={2}
                                                             formattingFn={toPersianNumber}
                                                       />

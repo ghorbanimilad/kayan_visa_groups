@@ -27,18 +27,23 @@ const defaultSettings: SectionSettings = {
   bannerBgFrom: "from-gray-300",
   bannerBgTo: "to-gray-100",
 };
-export async function generateMetadata({ params }: any): Promise<Metadata> {
+export const dynamicParams = true; // اگر صفحه dynamic است
+
+export async function generateMetadata({ params }: { params: { visaSlug: string; countrySlug: string } }): Promise<Metadata> {
+  // ابتدا params را await کنید (Next.js الان نیاز دارد)
+  const { visaSlug, countrySlug } = await Promise.resolve(params);
+
   const visaType = await prisma.visaType.findFirst({
     where: {
-      slug: params.visaSlug,
-      countries: { some: { slug: params.countrySlug } },
+      slug: visaSlug,
+      countries: { some: { slug: countrySlug } },
     },
   });
 
   const country = visaType
     ? await prisma.country.findUnique({
-      where: { slug: params.countrySlug },
-    })
+        where: { slug: countrySlug },
+      })
     : null;
 
   const title = visaType && country
@@ -56,7 +61,7 @@ export async function generateMetadata({ params }: any): Promise<Metadata> {
       title,
       description,
       type: "website",
-      url: `https://yourwebsite.com/${params.countrySlug}/${params.visaSlug}`,
+      url: `https://yourwebsite.com/${countrySlug}/${visaSlug}`,
       images: [
         {
           url: country?.imageUrl || "/images/default-og-image.jpg",
@@ -73,6 +78,7 @@ export async function generateMetadata({ params }: any): Promise<Metadata> {
     },
   };
 }
+
 
 // بنرها
 const BannerComponent = ({ text, buttonText, buttonLink, bgFrom, bgTo }: any) => (
@@ -163,14 +169,14 @@ export default async function CountryPage(props: any) {
       <div className="flex mx-4 gap-4">
         <main className="flex-[4]">
           {/* کاور ویزا */}
-          <div className="relative w-full h-[400px]">
+          <div className="relative ">
             {visaCover && (
               <Image
                 src={visaCover}
                 alt={`${country.name} - ${visaType.name}`}
-                width={400}
-                height={400}
-                className="object-contain w-full h-full"
+                width={1200}
+                height={200}
+                className="object-cover w-full h-full"
               />
             )}
           </div>
@@ -185,33 +191,36 @@ export default async function CountryPage(props: any) {
               >
                 <h2 className="text-xl font-bold text-gray-50 rounded py-4 mb-4 text-center bg-gray-800 border-gray-200 ">
                   {content.title ||
-                    (content.section === "introduction"
+                    (content.section === "Introduction"
                       ? "معرفی ویزا"
-                      : content.section === "benefits"
+                      : content.section === "Benefits"
                         ? "مزایا"
-                        : content.section === "requirements"
+                        : content.section === "Requirements"
                           ? "شرایط و مدارک"
-                          : content.section === "fees"
+                          : content.section === "Fees"
                             ? "هزینه‌ها"
-                            : content.section === "visaType"
+                            : content.section === "VisaType"
                               ? "نوع ویزا"
-                              : content.section === "process"
+                              : content.section === "Process"
                                 ? "فرایند"
-                                : content.section === "contact"
+                                : content.section === "Contact"
                                   ? "تماس"
-                                  : content.section === "renewal"
+                                  : content.section === "Renewal"
                                     ? "تمدید"
-                                    : content.section === "opportunities"
+                                    : content.section === "Opportunities"
                                       ? "فرصت‌ها"
-                                      : content.section === "tips"
-                                        ? "نکات"
-                                        : "بدون عنوان")}
+                                      : content.section === "Tips"
+                                        ? "نکات" 
+                                        : content.section === "Documents"
+                                        ? "مدارک"
+                                        : content.section === "Interview"
+                                          ? "مصاحبه"
+                                          : "بدون عنوان")}
                 </h2>
 
                 <div
                   dir="rtl"
-                  className={`overflow-x-auto max-w-none ${content.section === "benefits" ? "bg-red-500" : "bg-white"
-                    } p-4`}
+                  className={`overflow-x-auto max-w-none p-4`}
                 >
                   <div
                     className="ck-content prose prose-rose prose-ul:list-disc prose-li:ml-6 leading-7 text-justify"

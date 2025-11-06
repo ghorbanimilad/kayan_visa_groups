@@ -1,31 +1,39 @@
-
-import AboutSection from "@/components/AboutSection";
-import CountrySlider from "@/components/CountrySlider";
-import HeroSection from "@/components/HeroSection";
-import ImageSlider from "@/components/ImageSlider";
-import Introduction from "@/components/Introduction";
-import LetterAccept from "@/components/LetterAccept";
-import OurExperince from "@/components/OurExperince";
-import OurServices from "@/components/OurServices";
-import VisaStudio from "@/components/VisaStudio";
+import dynamic from "next/dynamic";
 import { Metadata } from "next";
 
+// ---------- کامپوننت‌هایی که بالا صفحه هستند ----------
+import HeroSection from "@/components/HeroSection";
+import AboutSection from "@/components/AboutSection";
+
+// ---------- کامپوننت‌های پایین صفحه (lazy load) ----------
+const OurServices = dynamic(() => import("@/components/OurServices"));
+const Introduction = dynamic(() => import("@/components/Introduction"));
+const ImageSlider = dynamic(() => import("@/components/ImageSlider"));
+const OurExperince = dynamic(() => import("@/components/OurExperince"));
+const CountrySlider = dynamic(() => import("@/components/CountrySlider"));
+const VisaStudio = dynamic(() => import("@/components/VisaStudio"));
+const LetterAccept = dynamic(() => import("@/components/LetterAccept"));
+
+// ---------- متادیتا ----------
 export const metadata: Metadata = {
-  title: "موسسه مهاجرتی کایان | مشاوره و ویزای مهاجرتی",
-  description: "موسسه مهاجرتی کایان، ارائه خدمات ویزا، مشاوره مهاجرت، وکیل مهاجرتی و ویزای استارت‌آپ با تجربه حرفه‌ای.",
-  keywords: "ویزا, مشاوره مهاجرتی, وکیل مهاجرتی, سایت مهاجرتی, ویزای کار, موسسه مهاجرتی, مهاجرت, اقامت, ویزای شینگن, ویزای استارت آپ",
-  authors: [{ name: "موسسه مهاجرتی کایان" }],
+  title: "موسسه مهاجرتی کایان | مشاوره تخصصی مهاجرت و اخذ ویزا",
+  description:
+    "موسسه مهاجرتی کایان با تیمی حرفه‌ای در زمینه ویزا، اقامت دائم، تحصیلی و کاری، بهترین راه مهاجرت را برای شما طراحی می‌کند. مشاوره رایگان و خدمات تضمینی.",
+  keywords:
+    "موسسه مهاجرتی کایان, ویزای تحصیلی, ویزای کاری, اقامت دائم, مهاجرت به کانادا, ویزای شینگن, مشاوره مهاجرتی",
+  authors: [{ name: "Kayan Immigration" }],
   openGraph: {
-    title: "موسسه مهاجرتی کایان | مشاوره و ویزای مهاجرتی",
-    description: "مشاوره مهاجرت و ویزا با موسسه کایان، تجربه‌ای حرفه‌ای و خدمات تخصصی برای مهاجرت.",
-    url: "https://yourwebsite.com",
-    siteName: "کایان",
+    title: "موسسه مهاجرتی کایان | مشاوره تخصصی مهاجرت و اخذ ویزا",
+    description:
+      "خدمات مهاجرتی حرفه‌ای شامل ویزای کاری، تحصیلی و اقامت دائم با موسسه کایان.",
+    url: "https://kayanimmigration.com",
+    siteName: "کایان مهاجرت",
     images: [
       {
-        url: "https://yourwebsite.com/images/og-image.jpg",
+        url: "https://kayanimmigration.com/images/og-image.jpg",
         width: 1200,
         height: 630,
-        alt: "موسسه مهاجرتی کایان",
+        alt: "Kayan Immigration",
       },
     ],
     locale: "fa_IR",
@@ -33,18 +41,20 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "موسسه مهاجرتی کایان | مشاوره و ویزای مهاجرتی",
-    description: "مشاوره و خدمات ویزا با موسسه کایان",
-    images: ["https://yourwebsite.com/images/og-image.jpg"],
+    title: "موسسه مهاجرتی کایان | مشاوره مهاجرت و ویزا",
+    description: "کایان، همراه شما در مسیر مهاجرت و دریافت ویزا.",
+    images: ["https://kayanimmigration.com/images/og-image.jpg"],
+  },
+  alternates: {
+    canonical: "https://kayanimmigration.com",
   },
 };
 
 
+// ---------- صفحه اصلی ----------
 export default function HomePage() {
-
   return (
     <div className="overflow-hidden">
-
       <HeroSection />
       <AboutSection />
 
@@ -55,7 +65,6 @@ export default function HomePage() {
       <CountrySlider />
       <VisaStudio />
       <LetterAccept />
-
     </div>
   );
 }

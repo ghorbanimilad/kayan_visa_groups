@@ -26,6 +26,7 @@ const labels: Record<string, string> = {
       shengen: "ویزای شینگن",
       studio: "استادیو ویزای استارت آپ",
       offers: "اولین قدم مهاجرت",
+      "immigration-evaluation": "فرم ارزیابی مهاجرت",
 
       "startup-visa": "ویزای استارت آپ",
       "study-visa": "ویزای تحصیلی",
