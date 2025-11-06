@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import type { ComponentType } from "react";
 import ReportForm from "@/components/dashboard/ReportForm";
 import ReportList from "@/components/dashboard/ReportList";
 
@@ -10,8 +11,18 @@ interface CurrentUser {
   role: "ADMIN" | "EMPLOYEE";
 }
 
+interface WorkReport {
+  id: string;
+  content: string;
+  createdAt: string;
+  userId: string;
+  user: {
+    username: string;
+  };
+}
+
 export default function WorkReportsPage() {
-  const [reports, setReports] = useState<any[]>([]);
+  const [reports, setReports] = useState<WorkReport[]>([]);
   const [reportsLoading, setReportsLoading] = useState(true);
   const [currentUser, setCurrentUser] = useState<CurrentUser | null>(null);
   const [loading, setLoading] = useState(true);
@@ -61,8 +72,14 @@ export default function WorkReportsPage() {
   useEffect(() => {
     refreshReports();
   }, []);
-
   if (loading) return <p className="text-center mt-5">در حال بارگذاری...</p>;
+
+  const TypedReportList = ReportList as unknown as ComponentType<{
+    reports: WorkReport[];
+    refreshReports: () => Promise<void>;
+    loading: boolean;
+    currentUser: CurrentUser | null;
+  }>;
 
   return (
     <div className="p-6 space-y-8">
@@ -74,7 +91,7 @@ export default function WorkReportsPage() {
       <p className="text-xl font-semibold tracking-tight">لیست گزارشات</p>
       <hr className="border-gray-300" />
 
-      <ReportList
+      <TypedReportList
         reports={reports}
         refreshReports={refreshReports}
         loading={reportsLoading}
@@ -83,3 +100,4 @@ export default function WorkReportsPage() {
     </div>
   );
 }
+
