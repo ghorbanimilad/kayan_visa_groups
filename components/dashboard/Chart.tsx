@@ -104,7 +104,7 @@ export default function ImmigrationDashboard() {
                       key={`cell-${index}`}
                       fill={COLORS[index % COLORS.length]}
                       // جدا کردن هر بخش کمی از مرکز
-                      cornerRadius={6}
+                      
                       stroke="#fff"
                       strokeWidth={2}
                     />

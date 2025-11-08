@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { z } from "zod";
-import validator from "validator";
+
 import fs from "fs";
 import path from "path";
 
@@ -27,10 +27,11 @@ const userSchema = z.object({
 // ⚡ GET /api/users/[id]
 export async function GET(
   _req: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
-  const id = Number(params.id); // ⚡ همین کافی است
-  if (isNaN(id)) {
+  const { id } = await params;
+  const userId = Number(id);
+  if (isNaN(userId)) {
     return NextResponse.json(
       { success: false, message: "ID نامعتبر است" },
       { status: 400 }
@@ -38,7 +39,7 @@ export async function GET(
   }
 
   try {
-    const user = await prisma.user.findUnique({ where: { id } });
+    const user = await prisma.user.findUnique({ where: { id: userId } });
     if (!user)
       return NextResponse.json(
         { success: false, message: "کاربر یافت نشد" },
@@ -57,11 +58,12 @@ export async function GET(
 // ⚡ PUT /api/users/[id]
 export async function PUT(
   req: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const id = Number(params.id);
-    if (isNaN(id))
+    const { id } = await params;
+    const userId = Number(id);
+    if (isNaN(userId))
       return NextResponse.json(
         { success: false, message: "ID نامعتبر است" },
         { status: 400 }
@@ -82,9 +84,13 @@ export async function PUT(
     const parsed = userSchema.safeParse(rawData);
     if (!parsed.success) {
       const fieldErrors: Record<string, string> = {};
-      for (const key in parsed.error.flatten().fieldErrors) {
-        const messages = parsed.error.flatten().fieldErrors[key];
-        if (messages && messages.length > 0) fieldErrors[key] = messages[0];
+      const fieldErrorsObj = parsed.error.flatten().fieldErrors;
+      for (const key of Object.keys(
+        fieldErrorsObj
+      ) as (keyof typeof fieldErrorsObj)[]) {
+        const messages = fieldErrorsObj[key];
+        if (messages && messages.length > 0)
+          fieldErrors[key as string] = messages[0];
       }
       return NextResponse.json(
         { success: false, error: fieldErrors },
@@ -134,7 +140,7 @@ export async function PUT(
     if (fileUrls.profileImage) updateData.profileImage = fileUrls.profileImage;
 
     const user = await prisma.user.update({
-      where: { id },
+      where: { id: userId },
       data: updateData,
     });
 
@@ -147,8 +153,6 @@ export async function PUT(
   }
 }
 
-// export async function PUT(req: Request, { params }: { params: { id: string } }) {
-//   try {
 //     const id = Number(params.id);
 //     if (isNaN(id)) return NextResponse.json({ success: false, message: "ID نامعتبر است" }, { status: 400 });
 
@@ -220,17 +224,18 @@ export async function PUT(
 // ⚡ DELETE /api/users/[id]
 export async function DELETE(
   _req: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const id = Number(params.id);
-    if (isNaN(id))
+    const { id } = await params;
+    const userId = Number(id);
+    if (isNaN(userId))
       return NextResponse.json(
         { success: false, message: "ID نامعتبر است" },
         { status: 400 }
       );
 
-    await prisma.user.delete({ where: { id } });
+    await prisma.user.delete({ where: { id: userId } });
 
     return NextResponse.json({
       success: true,

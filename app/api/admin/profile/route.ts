@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import type { NextRequest } from "next/server";
 import jwt from "jsonwebtoken";
+import bcrypt from "bcrypt";
 
 async function getCurrentUser(req: NextRequest) {
   const token = req.cookies.get("adminToken")?.value;

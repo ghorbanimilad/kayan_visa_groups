@@ -1,8 +1,8 @@
 import jwt from "jsonwebtoken";
 
-import { NextAuthOptions } from "next-auth";
-import CredentialsProvider from "next-auth/providers/credentials";
-import { prisma } from "./prisma"; // اگر از Prisma استفاده می‌کنی
+// import { NextAuthOptions } from "next-auth";
+// import CredentialsProvider from "next-auth/providers/credentials";
+// import { prisma } from "./prisma"; // اگر از Prisma استفاده می‌کنی
 
 
 const SECRET = process.env.JWT_SECRET || "secret123";
@@ -28,46 +28,46 @@ export function checkAdmin(req: Request) {
 
 
 
-export const authOptions: NextAuthOptions = {
-  providers: [
-    CredentialsProvider({
-      name: "Credentials",
-      credentials: {
-        email: { label: "ایمیل", type: "text" },
-        password: { label: "رمز عبور", type: "password" },
-      },
-      async authorize(credentials) {
-        if (!credentials) return null;
+// export const authOptions: NextAuthOptions = {
+//   providers: [
+//     CredentialsProvider({
+//       name: "Credentials",
+//       credentials: {
+//         email: { label: "ایمیل", type: "text" },
+//         password: { label: "رمز عبور", type: "password" },
+//       },
+//       async authorize(credentials) {
+//         if (!credentials) return null;
 
-        const user = await prisma.user.findUnique({
-          where: { email: credentials.email },
-        });
+//         const user = await prisma.user.findUnique({
+//           where: { email: credentials.email },
+//         });
 
-        if (!user) return null;
+//         if (!user) return null;
 
-        // مقایسه رمز عبور (فرض bcrypt)
-        const isValid = true; // اینجا رمز واقعی بررسی شود
-        if (!isValid) return null;
+//         // مقایسه رمز عبور (فرض bcrypt)
+//         const isValid = true; // اینجا رمز واقعی بررسی شود
+//         if (!isValid) return null;
 
-        return { id: user.id, name: user.name, role: user.role };
-      },
-    }),
-  ],
-  session: { strategy: "jwt" },
-  callbacks: {
-    async jwt({ token, user }) {
-      if (user) {
-        token.id = user.id;
-        token.role = user.role;
-      }
-      return token;
-    },
-    async session({ session, token }) {
-      if (token) {
-        session.user.id = token.id as string;
-        session.user.role = token.role as string;
-      }
-      return session;
-    },
-  },
-};
+//         return { id: user.id, name: user.name, role: user.role };
+//       },
+//     }),
+//   ],
+//   session: { strategy: "jwt" },
+//   callbacks: {
+//     async jwt({ token, user }) {
+//       if (user) {
+//         token.id = user.id;
+//         token.role = user.role;
+//       }
+//       return token;
+//     },
+//     async session({ session, token }) {
+//       if (token) {
+//         session.user.id = token.id as string;
+//         session.user.role = token.role as string;
+//       }
+//       return session;
+//     },
+//   },
+// };

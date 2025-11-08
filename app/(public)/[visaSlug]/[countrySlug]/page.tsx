@@ -64,7 +64,7 @@ export async function generateMetadata({ params }: { params: { visaSlug: string;
       url: `https://yourwebsite.com/${countrySlug}/${visaSlug}`,
       images: [
         {
-          url: country?.imageUrl || "/images/default-og-image.jpg",
+          url: country?.coverImage || country?.flagUrl || "/images/og-image.jpg",
           width: 1200,
           height: 630,
         },
@@ -74,7 +74,7 @@ export async function generateMetadata({ params }: { params: { visaSlug: string;
       card: "summary_large_image",
       title,
       description,
-      images: [country?.imageUrl || "/images/default-og-image.jpg"],
+      images: [country?.coverImage || country?.flagUrl || "/images/og-image.jpg"],
     },
   };
 }
@@ -186,7 +186,7 @@ export default async function CountryPage(props: any) {
             country.contents.map((content, index) => (
               <section
                 key={content.id}
-                className={`mb-2 p-6 container mx-auto rounded-lg ${content.section === "benefits" ? "bg-red-500" : "bg-white"
+                className={`mb-2 p-6 container mx-auto rounded-lg ${content.section?.toLowerCase() === "benefits" ? "bg-red-500" : "bg-white"
                   }`}
               >
                 <h2 className="text-xl font-bold text-gray-50 rounded py-4 mb-4 text-center bg-gray-800 border-gray-200 ">

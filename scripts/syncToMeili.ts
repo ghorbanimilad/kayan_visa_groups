@@ -40,7 +40,7 @@ async function main() {
       description: "", // می‌تونی خلاصه‌ای از contents اضافه کنی
       countryCode: c.countryCode,
       slug: c.slug,
-      createdAt: c.createdAt ?? new Date().toISOString(),
+      createdAt: new Date().toISOString(), // ✅
     });
   }
 
@@ -78,7 +78,7 @@ async function main() {
   }
 
   const response = await index.addDocuments(docs);
-  console.log("Sent documents to Meili. updateId:", response.updateId);
+  console.log("Sent documents to Meili. updateId:", response.taskUid);
 }
 
 main()

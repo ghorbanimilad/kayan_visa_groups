@@ -50,10 +50,6 @@ export default function EditReportModal({ report, onClose, onUpdated }: Props) {
       return;
     }
 
-    
-
-    
-
     setLoading(true);
     try {
       const res = await fetch(`/api/workReports/${report.id}`, {
@@ -66,9 +62,8 @@ export default function EditReportModal({ report, onClose, onUpdated }: Props) {
       });
 
       const data = await res.json();
-
+      
       if (res.ok) {
-        toast.success("گزارش با موفقیت به‌روزرسانی شد");
         onUpdated();
         onClose();
       } else {

@@ -6,14 +6,6 @@ import { motion, useScroll, useTransform } from "framer-motion"
 import Image from 'next/image'
 import Link from 'next/link'
 
-// const cardVariants = {
-//   hidden: { opacity: 0, y: 30 },
-//   visible: (i: number) => ({
-//     opacity: 1,
-//     y: 0,
-//     transition: { delay: i * 0.2, duration: 0.6, ease: "easeOut" },
-//   }),
-// };
 
 export default function StudioPage() {
 
@@ -367,7 +359,7 @@ export default function StudioPage() {
             className="absolute top-0 left-0 h-full w-1/2   z-10"
             style={{
               clipPath: "polygon(0 0, 80% 0, 100% 50%, 80% 100%, 0 100%)",
-            }}
+            } as any}
           >
             <img
               src="/images/docs/studio-steps.jpg"

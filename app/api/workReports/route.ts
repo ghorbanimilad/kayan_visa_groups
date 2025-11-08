@@ -80,53 +80,6 @@ if (!adminUser) {
   }
 }
 
-// ----------------------
-// GET - admin همه گزارش‌ها را ببیند
-// ----------------------
-
-// export async function GET(req: NextRequest) {
-//   try {
-//     const authHeader = req.headers.get("authorization");
-//     if (!authHeader) {
-//       return NextResponse.json({ error: "No authorization header" }, { status: 401 });
-//     }
-
-//     const token = authHeader.split(" ")[1];
-
-//     if (!token || token === "undefined" || token === "null") {
-//       return NextResponse.json({ error: "Invalid token" }, { status: 401 });
-//     }
-
-//     let decoded: any;
-//     try {
-//       decoded = jwt.verify(token, process.env.JWT_SECRET!);
-//     } catch (err) {
-//       console.error("JWT error:", err);
-//       return NextResponse.json({ error: "Invalid or expired token" }, { status: 403 });
-//     }
-
-//     // اگر نقش کاربر ادمین است همه گزارش‌ها را ببیند
-//     if (decoded.role === "ADMIN") {
-//       const reports = await prisma.workReport.findMany({
-//         include: { admin: true },
-//         orderBy: { createdAt: "desc" },
-//       });
-//       return NextResponse.json(reports);
-//     }
-
-//     // اگر کارمند است فقط گزارش‌های خودش را ببیند
-//     const reports = await prisma.workReport.findMany({
-//       where: { employeeId: decoded.id },
-//       include: { admin: true },
-//       orderBy: { createdAt: "desc" },
-//     });
-
-//     return NextResponse.json(reports);
-//   } catch (err) {
-//     console.error("Unexpected error in /api/workReports:", err);
-//     return NextResponse.json({ error: "Internal server error" }, { status: 500 });
-//   }
-// }
 
 
 export async function GET(req: NextRequest) {

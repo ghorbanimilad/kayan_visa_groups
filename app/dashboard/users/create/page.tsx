@@ -63,7 +63,11 @@ export default function CreatePage() {
                         setProfileImage(null);
                         setErrors({});
                   } else {
-                        if (data.error) {
+                        if (typeof data.error === "string") {
+                              // اگر backend پیام ساده برگرداند
+                              toast.error(data.error);
+                        } else if (data.error && typeof data.error === "object") {
+                              // اگر backend validation errors برگرداند
                               const fieldErrors: Errors = {};
                               for (const key in data.error) {
                                     fieldErrors[key as keyof Errors] = data.error[key][0];
@@ -126,6 +130,7 @@ export default function CreatePage() {
                                           <input type="text"
                                                 value={code}
                                                 required
+                                                maxLength={10}
                                                 onChange={(e) => setCode(e.target.value)}
                                                 className={inputClass}
                                                 placeholder='شماره کلاینت' />
@@ -141,7 +146,7 @@ export default function CreatePage() {
                                     <div>
                                           <label>تصویر پروفایل</label>
                                           <input type="file"
-                                          required
+                                                required
                                                 onChange={(e) => setProfileImage(e.target.files ? e.target.files[0] : null)}
                                                 className={inputClass} />
                                     </div>

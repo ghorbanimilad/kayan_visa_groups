@@ -60,7 +60,7 @@ export default function EditStaffPage() {
                   toast.success('کارمند ویرایش شد');
                   router.push('/dashboard/staff'); // برگشت به لیست بعد از ویرایش
             } catch (err: any) {
-                  if (err instanceof z.ZodError) setErrors(err.errors.map(e => e.message));
+                  if (err instanceof z.ZodError) setErrors(err.issues.map(e => e.message));
                   else setErrors(['خطای ناشناخته']);
             }
       };

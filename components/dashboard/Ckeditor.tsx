@@ -2,7 +2,6 @@
 
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
-import { PiAddressBook } from "react-icons/pi";
 
 
 interface Props {
@@ -12,10 +11,12 @@ interface Props {
 
 export default function Editor({ value, onChange }: Props) {
   return (
-    <div dir="rtl" className="ckeditor-container text-right">
+    <div
+      style={{ padding: "1rem", borderRadius: "0.5rem", backgroundColor: "#f9f9f9" }}
+      dir="rtl" className="ckeditor-container text-right">
       <CKEditor
         editor={ClassicEditor}
-        style={{ padding: "1rem", borderRadius: "0.5rem", backgroundColor: "#f9f9f9" }}
+
         data={value}
         config={{
           language: {
@@ -109,7 +110,10 @@ export default function Editor({ value, onChange }: Props) {
         onReady={(editor) => {
           // راست‌چین کردن محیط ویرایش
           editor.editing.view.change((writer) => {
-            writer.setAttribute("dir", "rtl", editor.editing.view.document.getRoot());
+            const root = editor.editing.view.document.getRoot();
+            if (root) {
+              writer.setAttribute("dir", "rtl", root);
+            }
           });
 
           // ارتفاع پیش‌فرض ادیتور

@@ -1,18 +1,17 @@
-// /app/dashboard/reports/[id]/page.tsx
 "use client";
 
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
-import { User, Mail, CalendarDays, FileText, BadgeCheck } from "lucide-react";
+import { User, Mail, CalendarDays, FileText } from "lucide-react";
 import Link from "next/link";
-import toast from "react-hot-toast";
+
 
 type Report = {
   id: string;
   title: string;
   content: string;
   createdAt: string;
-  status: string; // ✅ اضافه شد
+  status: string; 
   employee?: { username: string; email: string };
 };
 
@@ -28,6 +27,7 @@ export default function ReportDetailPage({ initialReport }: { initialReport: Rep
         const res = await fetch(`/api/workReports/${id}`, { credentials: "include" });
         if (!res.ok) throw new Error("Report not found");
         const data = await res.json();
+        
         setReport(data);
       } catch {
         setReport(null);

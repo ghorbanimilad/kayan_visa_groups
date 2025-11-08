@@ -2,7 +2,6 @@ import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
 import z from "zod";
 
-
 // اسکیمای اعتبارسنجی با Zod
 const contentSchema = z.object({
   title: z.string().min(1),
@@ -32,7 +31,6 @@ export async function GET() {
   }
 }
 
-
 export async function POST(req: Request) {
   try {
     const body = await req.json();
@@ -57,10 +55,13 @@ export async function POST(req: Request) {
     console.error(err);
     if (err instanceof z.ZodError) {
       return NextResponse.json(
-        { success: false, message: err.errors.map((e) => e.message).join(", ") },
+        { error: err.issues.map((e) => e.message) },
         { status: 400 }
       );
     }
-    return NextResponse.json({ success: false, message: "خطا در ذخیره محتوا" }, { status: 500 });
+    return NextResponse.json(
+      { success: false, message: "خطا در ذخیره محتوا" },
+      { status: 500 }
+    );
   }
 }

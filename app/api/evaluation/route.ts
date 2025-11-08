@@ -49,15 +49,15 @@ export async function POST(request: Request) {
       { message: "فرم با موفقیت ذخیره شد", data: newEvaluation },
       { status: 200 }
     );
-  } catch (error) {
-    if (error instanceof z.ZodError) {
+  } catch (err) {
+    if (err instanceof z.ZodError) {
       return NextResponse.json(
-        { message: "داده‌ها معتبر نیستند", errors: error.errors },
+        { error: err.issues.map((e) => e.message) },
         { status: 400 }
       );
     }
 
-    console.error(error);
+    console.error(err);
     return NextResponse.json(
       { message: "خطای سرور هنگام ثبت فرم" },
       { status: 500 }
@@ -72,8 +72,11 @@ export async function GET(request: Request) {
     const email = url.searchParams.get("email");
 
     if (email) {
-      const evaluation = await prisma.immigrationEvaluation.findUnique({ where: { email } });
-      if (!evaluation) return NextResponse.json({ message: "یافت نشد" }, { status: 404 });
+      const evaluation = await prisma.immigrationEvaluation.findUnique({
+        where: { email },
+      });
+      if (!evaluation)
+        return NextResponse.json({ message: "یافت نشد" }, { status: 404 });
       return NextResponse.json(evaluation);
     }
 
@@ -84,4 +87,3 @@ export async function GET(request: Request) {
     return NextResponse.json({ message: "خطای سرور" }, { status: 500 });
   }
 }
-

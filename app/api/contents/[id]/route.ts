@@ -1,6 +1,7 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { z } from "zod";
+
 
 const contentSchema = z.object({
   title: z.string().min(1),
@@ -12,10 +13,11 @@ const contentSchema = z.object({
   visaTypeIds: z.array(z.string()),
 });
 
-export async function GET(req: Request, context: { params: { id: string } }) {
-  // ⚠️ باید await کنیم
-  const { params } = await context;
-  const { id } = params;
+export async function GET(
+  req: NextRequest,
+  context: { params: Promise<{ id: string }> } // ✅ نوع جدید
+) {
+  const { id } = await context.params; // ✅ await لازم است
 
   if (!id) {
     return NextResponse.json({ success: false, message: "شناسه محتوا ارسال نشده" }, { status: 400 });
@@ -50,10 +52,12 @@ export async function GET(req: Request, context: { params: { id: string } }) {
   }
 }
 
-
-export async function PUT(req: Request, { params }: { params: { id: string } }) {
+export async function PUT(
+  req: NextRequest,
+  context: { params: Promise<{ id: string }> } // ✅ اصلاح شد
+) {
   try {
-    const id = params.id;
+    const { id } = await context.params; // ✅ await لازم است
     const body = await req.json();
     const parsed = contentSchema.parse(body);
 
@@ -66,9 +70,7 @@ export async function PUT(req: Request, { params }: { params: { id: string } }) 
         imageUrl: parsed.imageUrl || "",
         order: parsed.order,
         country: { connect: { id: parsed.countryId } },
-        visaTypes: {
-          set: parsed.visaTypeIds.map((id) => ({ id })),
-        },
+        visaTypes: { set: parsed.visaTypeIds.map((id) => ({ id })) },
       },
     });
 
@@ -77,10 +79,19 @@ export async function PUT(req: Request, { params }: { params: { id: string } }) 
     console.error(err);
     if (err instanceof z.ZodError) {
       return NextResponse.json(
-        { success: false, message: err.errors.map((e) => e.message).join(", ") },
+        { error: err.issues.map((e) => e.message) },
         { status: 400 }
       );
     }
     return NextResponse.json({ success: false, message: "خطا در آپدیت محتوا" }, { status: 500 });
   }
 }
+
+
+
+
+
+
+
+
+

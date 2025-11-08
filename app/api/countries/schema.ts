@@ -16,7 +16,15 @@ export const CountryUpdateSchema = CountrySchema.partial();
 
 // 📌 برای کوئری (pagination + search)
 export const CountryQuerySchema = z.object({
-  page: z.string().transform((val) => parseInt(val)).default("1"),
-  limit: z.string().transform((val) => parseInt(val)).default("10"),
+  page: z.coerce.number().default(1),   // رشته → عدد
+  limit: z.coerce.number().default(10),
   search: z.string().optional(),
 });
+
+
+
+// export const CountryQuerySchema = z.object({
+//   page: z.string().transform((val) => parseInt(val)).default("1"),
+//   limit: z.string().transform((val) => parseInt(val)).default("10"),
+//   search: z.string().optional(),
+// });

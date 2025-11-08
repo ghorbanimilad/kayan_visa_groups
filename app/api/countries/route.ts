@@ -1,8 +1,7 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { CountrySchema  } from "./schema";
+import { CountrySchema } from "./schema";
 import { z } from "zod";
-
 
 // Zod schema برای query
 const CountryQuerySchema = z.object({
@@ -19,15 +18,17 @@ export async function POST(req: Request) {
 
     const country = await prisma.country.create({ data });
     return NextResponse.json(country, { status: 201 });
-  } catch (error) {
-    if (error instanceof z.ZodError) {
-      return NextResponse.json({ error: error.errors }, { status: 400 });
+  } catch (err) {
+    if (err instanceof z.ZodError) {
+      return NextResponse.json(
+        { error: err.issues.map((e) => e.message) },
+        { status: 400 }
+      );
     }
-    console.error(error);
+    console.error(err);
     return NextResponse.json({ error: "مشکلی پیش آمد" }, { status: 500 });
   }
 }
-
 
 export async function GET(req: Request) {
   try {
@@ -74,11 +75,14 @@ export async function GET(req: Request) {
         hasPrevPage: query.page > 1,
       },
     });
-  } catch (error) {
-    if (error instanceof z.ZodError) {
-      return NextResponse.json({ error: error.errors }, { status: 400 });
+  } catch (err) {
+    if (err instanceof z.ZodError) {
+      return NextResponse.json(
+        { error: err.issues.map((e) => e.message) },
+        { status: 400 }
+      );
     }
-    console.error(error);
+    console.error(err);
     return NextResponse.json({ error: "مشکلی پیش آمد" }, { status: 500 });
   }
 }

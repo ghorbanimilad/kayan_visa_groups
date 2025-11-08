@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma"; // مسیر رو با ساختار پروژه‌ات تنظیم کن
-import jwt from "jsonwebtoken";
+import { verifyJwt } from "@/lib/jwt";
 import { z } from "zod";
 
 //  schema برای هدر Authorization
@@ -57,17 +57,6 @@ const VisaTypeSchema = z.object({
 // type VisaType = z.infer<typeof VisaTypeSchema>;
 const ResponseSchema = z.array(VisaTypeSchema);
 
-/* ------------------------
-   Helper: verify JWT
-   ------------------------ */
-// function verifyJwt(token: string) {
-//   try {
-//     const payload = jwt.verify(token, process.env.JWT_SECRET!);
-//     return { ok: true, payload };
-//   } catch (err) {
-//     return { ok: false, error: err };
-//   }
-// }
 
 /* ----------------------------
    API Route: GET

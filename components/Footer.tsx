@@ -111,7 +111,7 @@ export default function Footer() {
 
                                           {menus.map(menu => (
                                                 <div key={menu.id} className="flex flex-col gap-1">
-                                                      <p className="text-gray-200 font-medium">{menu.title}</p>
+                                                      <p className="text-gray-200 font-medium">{menu.name}</p>
                                                       <ul className="list-disc list-inside text-sm text-gray-200 ml-4">
                                                             {menu.countries.map(country => (
                                                                   <li key={country.id}>

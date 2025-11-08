@@ -44,7 +44,7 @@ export async function POST(req: Request) {
   } catch (err: any) {
     console.error(err);
     if (err instanceof z.ZodError) {
-      return NextResponse.json({ error: err.errors.map(e => e.message) }, { status: 400 });
+      return NextResponse.json({ error: err.issues.map(e => e.message) }, { status: 400 });
     }
     return NextResponse.json({ error: "خطای داخلی سرور" }, { status: 500 });
   }

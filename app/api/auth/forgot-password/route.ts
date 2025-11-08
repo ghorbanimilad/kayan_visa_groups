@@ -1,14 +1,11 @@
 import { NextResponse } from "next/server";
-import nodemailer from "nodemailer";
 import { prisma } from "@/lib/prisma";
 
-// تولید توکن امن
 function generateToken() {
   return crypto.getRandomValues(new Uint8Array(32))
     .reduce((str, byte) => str + byte.toString(16).padStart(2, "0"), "");
 }
 
-// هش کردن توکن با Web Crypto API
 async function hashToken(token: string) {
   const encoder = new TextEncoder();
   const data = encoder.encode(token);
@@ -21,12 +18,11 @@ export async function POST(req: Request) {
   try {
     const { email } = await req.json();
     const admin = await prisma.admin.findUnique({ where: { email } });
-    if (!admin) {
+    if (!admin)
       return NextResponse.json(
         { message: "کاربری با این ایمیل یافت نشد." },
         { status: 404 }
       );
-    }
 
     // تولید و هش توکن
     const token = generateToken();
@@ -40,14 +36,17 @@ export async function POST(req: Request) {
       },
     });
 
+    // ✅ لود تنبل (Lazy Import) فقط هنگام نیاز
+    const nodemailer = await import("nodemailer");
+
     const transporter = nodemailer.createTransport({
       host: "smtp.gmail.com",
-      port: 465, // SSL
+      port: 465,
       secure: true,
       service: "gmail",
       auth: {
         user: process.env.EMAIL_USER!,
-        pass: process.env.EMAIL_PASS!, // App Password واقعی
+        pass: process.env.EMAIL_PASS!,
       },
     });
 

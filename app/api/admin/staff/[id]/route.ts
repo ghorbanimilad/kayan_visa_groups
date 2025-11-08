@@ -1,4 +1,4 @@
-// app/api/admin/staff/[id]/route.ts
+
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import bcrypt from "bcrypt";
@@ -12,9 +12,9 @@ const staffSchema = z.object({
 
 export async function GET(
   req: Request,
-  { params }: { params: { id: string } }
+  context: { params: { id: string } | Promise<{ id: string }> }
 ) {
-  const { id } = params;
+  const { id } = await context.params; // ✅ حل مشکل Promise
 
   try {
     const staff = await prisma.admin.findUnique({
@@ -38,25 +38,28 @@ export async function GET(
 
 export async function DELETE(
   req: Request,
-  { params }: { params: { id: string } }
+  context: { params: { id: string } | Promise<{ id: string }> }
 ) {
-  const { id } = params;
+  const { id } = await context.params;
 
   try {
-    await prisma.admin.delete({
-      where: { id },
-    });
-
-    return NextResponse.json({ message: 'کارمند حذف شد' });
+    await prisma.admin.delete({ where: { id } });
+    return NextResponse.json({ message: "کارمند حذف شد" });
   } catch (error) {
     console.error(error);
-    return NextResponse.json({ message: 'خطا در حذف کارمند' }, { status: 500 });
+    return NextResponse.json(
+      { message: "خطا در حذف کارمند" },
+      { status: 500 }
+    );
   }
 }
 
-export async function PATCH(req: Request, { params }: { params: { id: string } }) {
+export async function PATCH(
+  req: Request,
+  context: { params: { id: string } | Promise<{ id: string }> }
+) {
   try {
-    const { id } = params;
+    const { id } = await context.params;
     const body = await req.json();
     const data = staffSchema.parse(body);
 
@@ -75,7 +78,10 @@ export async function PATCH(req: Request, { params }: { params: { id: string } }
   } catch (err: any) {
     console.error(err);
     if (err instanceof z.ZodError) {
-      return NextResponse.json({ error: err.errors.map((e) => e.message) }, { status: 400 });
+      return NextResponse.json(
+        { error: err.issues.map((e) => e.message) },
+        { status: 400 }
+      );
     }
     return NextResponse.json({ error: "خطای داخلی سرور" }, { status: 500 });
   }

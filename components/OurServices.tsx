@@ -16,17 +16,16 @@ export default function ServicesSection() {
       transition: {
         staggerChildren: 0.3, // فاصله بین انیمیشن هر کارت کمتر شد
         delayChildren: 0.2,   // شروع اولیه کمی زودتر
-        ease: "easeOut",
       },
     },
   }
 
   const itemVariants = {
     hidden: { opacity: 0, y: 20 },
-    visible: { 
-      opacity: 1, 
-      y: 0, 
-      transition: { duration: 0.6, ease: "easeOut" } 
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.6 }
     },
   }
 
@@ -60,10 +59,10 @@ export default function ServicesSection() {
 
   return (
     <motion.div
+      variants={containerVariants}
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, amount: 0.4 }}
-      variants={containerVariants}
       className="flex flex-col min-h-screen mx-4 space-y-6 items-center justify-center"
     >
       <h1 className="text-lg font-bold tracking-tight text-red-500 mb-2">

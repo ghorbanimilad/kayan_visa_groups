@@ -161,7 +161,7 @@ export default function Navbar({ visaTypes }: { visaTypes: VisaType[] }) {
                                                                   <img
                                                                         src={
                                                                               sub.flagUrl ??
-                                                                              `https://flagcdn.com/w20/${sub.countryCode.toLowerCase()}.png`
+                                                                              (sub.countryCode ? `https://flagcdn.com/w20/${sub.countryCode.toLowerCase()}.png` : undefined)
                                                                         }
                                                                         alt={`${sub.name} flag`}
                                                                         className="w-5 h-4 object-cover rounded-sm"
@@ -325,7 +325,7 @@ export default function Navbar({ visaTypes }: { visaTypes: VisaType[] }) {
                                                 <img
                                                       src={
                                                             sub.flagUrl ??
-                                                            `https://flagcdn.com/w20/${sub.countryCode.toLowerCase()}.png`
+                                                            (sub.countryCode ? `https://flagcdn.com/w20/${sub.countryCode.toLowerCase()}.png` : undefined)
                                                       }
                                                       alt={`${sub.name} flag`}
                                                       className="w-5 h-4 object-cover rounded-sm"
@@ -337,7 +337,7 @@ export default function Navbar({ visaTypes }: { visaTypes: VisaType[] }) {
                                           <Image src="/logo4.png" alt="موسسه مهاجرتی کایان" width={150} height={150} className="" />
                                     </div>
                               </div>
-                              
+
                         ))}
 
                   </div>

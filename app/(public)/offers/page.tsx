@@ -311,7 +311,7 @@ export default function OffersPage() {
           className="absolute top-0 left-0 h-full w-1/2 bg-gradient-to-br from-red-700 to-red-600 opacity-85 z-10"
           style={{
             clipPath: "polygon(0 0, 80% 0, 100% 50%, 80% 100%, 0 100%)",
-          }}
+          } as any}
         ></motion.div>
         <div className="grid grid-cols-1 md:grid-cols-2 items-center relative">
           {/* سمت چپ: متن با بکگراند سفید */}
