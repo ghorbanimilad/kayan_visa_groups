@@ -73,7 +73,6 @@ export default function Editor({ value, onChange }: Props) {
               { color: "#ffffcc", label: "زرد روشن" },
             ],
           },
-          alignment: { options: ["left", "center", "right", "justify"] },
           image: {
             toolbar: ["imageTextAlternative", "imageStyle:full", "imageStyle:side", "linkImage"],
           },
