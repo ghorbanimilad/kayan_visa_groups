@@ -3,7 +3,6 @@
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 
-
 interface Props {
   value: string;
   onChange: (data: string) => void;
@@ -13,15 +12,16 @@ export default function Editor({ value, onChange }: Props) {
   return (
     <div
       style={{ padding: "1rem", borderRadius: "0.5rem", backgroundColor: "#f9f9f9" }}
-      dir="rtl" className="ckeditor-container text-right">
+      dir="rtl"
+      className="ckeditor-container text-right"
+    >
       <CKEditor
-        editor={ClassicEditor}
-
+        editor={ClassicEditor as any} // <--- اضافه شد
         data={value}
         config={{
           language: {
-            ui: "fa", // فارسی برای منوها و دکمه‌ها
-            content: "fa", // فارسی برای محتوا
+            ui: "fa",
+            content: "fa",
           },
           toolbar: {
             items: [
@@ -73,16 +73,9 @@ export default function Editor({ value, onChange }: Props) {
               { color: "#ffffcc", label: "زرد روشن" },
             ],
           },
-          alignment: {
-            options: ["left", "center", "right", "justify"],
-          },
+          alignment: { options: ["left", "center", "right", "justify"] },
           image: {
-            toolbar: [
-              "imageTextAlternative",
-              "imageStyle:full",
-              "imageStyle:side",
-              "linkImage",
-            ],
+            toolbar: ["imageTextAlternative", "imageStyle:full", "imageStyle:side", "linkImage"],
           },
           table: {
             contentToolbar: [
@@ -98,25 +91,20 @@ export default function Editor({ value, onChange }: Props) {
               addTargetToExternalLinks: {
                 mode: "automatic",
                 callback: (url: string) => /^(https?:)?\/\//.test(url),
-                attributes: {
-                  target: "_blank",
-                  rel: "noopener noreferrer",
-                },
+                attributes: { target: "_blank", rel: "noopener noreferrer" },
               },
             },
           },
           placeholder: "محتوای خود را اینجا بنویسید...",
         }}
-        onReady={(editor) => {
-          // راست‌چین کردن محیط ویرایش
-          editor.editing.view.change((writer) => {
-            const root = editor.editing.view.document.getRoot();
-            if (root) {
+        onReady={(editor: any) => {
+          const root = editor.editing.view.document.getRoot();
+          if (root) {
+            editor.editing.view.change((writer: any) => {
               writer.setAttribute("dir", "rtl", root);
-            }
-          });
+            });
+          }
 
-          // ارتفاع پیش‌فرض ادیتور
           const editableElement = editor.ui.getEditableElement();
           if (editableElement) {
             editableElement.style.minHeight = "250px";
@@ -125,9 +113,8 @@ export default function Editor({ value, onChange }: Props) {
             editableElement.style.fontSize = "16px";
           }
         }}
-        onChange={(event, editor) => {
-          const data = editor.getData();
-          onChange(data);
+        onChange={(_: any, editor: any) => {
+          onChange(editor.getData());
         }}
       />
     </div>
