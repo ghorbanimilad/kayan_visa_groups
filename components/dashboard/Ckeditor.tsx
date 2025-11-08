@@ -90,7 +90,7 @@ export default function Editor({ value, onChange }: Props) {
             decorators: {
               addTargetToExternalLinks: {
                 mode: "automatic",
-                callback: (url: string) => /^(https?:)?\/\//.test(url),
+                callback: (url: string | null) => !!url && /^(https?:)?\/\//.test(url),
                 attributes: { target: "_blank", rel: "noopener noreferrer" },
               },
             },
