@@ -40,7 +40,7 @@
     "lucide-react": "^0.542.0",
     "meilisearch": "^0.53.0",
     "multer": "^2.0.2",
-    "next": "15.5.2",
+    "next": "15.5.9",
     "next-auth": "^4.24.11",
     "nodemailer": "^6.10.1",
     "prisma": "^6.16.3",
